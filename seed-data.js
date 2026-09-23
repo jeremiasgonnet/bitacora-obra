@@ -1,326 +1,50 @@
 export const SEED_DATA = {
-  "projects": [
-    {
-      "tempKey": 0,
-      "name": "Urquiza - Dormitorio + Quincho",
-      "client": "",
-      "type": "Obra",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 1,
-      "name": "Obra Azzini - Mora",
-      "client": "",
-      "type": "Obra",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 2,
-      "name": "José Hernandez 1537",
-      "client": "",
-      "type": "Obra",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 3,
-      "name": "Estomba 2041",
-      "client": "",
-      "type": "Obra",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 4,
-      "name": "Estomba 2031",
-      "client": "",
-      "type": "Obra",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 5,
-      "name": "Felipe Varela",
-      "client": "",
-      "type": "Obra",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 6,
-      "name": "Estomba 2676",
-      "client": "",
-      "type": "Obra",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 7,
-      "name": "Las Golondrinas 287",
-      "client": "Daniel - Marta",
-      "type": "Estudio",
-      "status": "Activo",
-      "notes": "Ampliación de Vivienda Unifamiliar"
-    },
-    {
-      "tempKey": 8,
-      "name": "Mitre 2663",
-      "client": "Claudio - Ivana",
-      "type": "Mixto",
-      "status": "Activo",
-      "notes": ""
-    },
-    {
-      "tempKey": 9,
-      "name": "Güemes y Rondeau",
-      "client": "Carlos Kunz",
-      "type": "Estudio",
-      "status": "Activo",
-      "notes": ""
-    }
+  projects: [
+    { tempKey: "proj_1", name: "Urquiza - Dormitorio + Quincho", client: "", type: "Obra", status: "Activo", notes: "" },
+    { tempKey: "proj_2", name: "Obra Azzini - Mora", client: "", type: "Obra", status: "Activo", notes: "" },
+    { tempKey: "proj_3", name: "José Hernandez 1537", client: "", type: "Obra", status: "Activo", notes: "" },
+    { tempKey: "proj_4", name: "Estomba 2041", client: "", type: "Obra", status: "Activo", notes: "" },
+    { tempKey: "proj_5", name: "Estomba 2031", client: "", type: "Obra", status: "Activo", notes: "" },
+    { tempKey: "proj_6", name: "Felipe Varela", client: "", type: "Obra", status: "Activo", notes: "" },
+    { tempKey: "proj_7", name: "Estomba 2676", client: "", type: "Obra", status: "Activo", notes: "" },
+    { tempKey: "proj_mt7kc2i6rgvtel", name: "Las Golondrinas 287", client: "Daniel - Marta", type: "Estudio", status: "Activo", notes: "Ampliación de Vivienda Unifamiliar" },
+    { tempKey: "proj_mt7kclgppc0ryi", name: "Mitre 2663", client: "Claudio - Ivana", type: "Mixto", status: "Activo", notes: "" },
+    { tempKey: "proj_mt8qb0jbjoifcp", name: "Güemes y Rondeau", client: "Carlos Kunz", type: "Estudio", status: "Activo", notes: "" },
+    { tempKey: "proj_mtrqc25rm38njd", name: "FELIPE VARELA - LUCAS HAAG", client: "LUCAS HAAG", type: "Estudio", status: "Activo", notes: "Presupuesto de presentación de planos de obra sin permiso" },
+    { tempKey: "proj_mu89kuw9mhqr1f", name: "Chuburu", client: "Martin - Eleonora, Calle Luis Agote", type: "Estudio", status: "Activo", notes: "Proyecto de Alero de entrada" },
   ],
-  "tasks": [
-    {
-      "title": "Cómputo de materiales reforma dormitorio",
-      "projectTempKey": 0,
-      "category": "Estudio",
-      "priority": "Alta",
-      "status": "Hecho",
-      "dueDate": "2026-08-26",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Se realizó solo el computo de tabiques divisorios"
-    },
-    {
-      "title": "Presupuesto de Dirección de Obra",
-      "projectTempKey": 1,
-      "category": "Obra",
-      "priority": "Alta",
-      "status": "Hecho",
-      "dueDate": "2026-08-28",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Verificar avance real de obra.\nVerificar existencias de planos de proyecto completo para la correcta ejecución"
-    },
-    {
-      "title": "Presupuesto de mano de obra",
-      "projectTempKey": 2,
-      "category": "Presupuesto",
-      "priority": "Alta",
-      "status": "Hecho",
-      "dueDate": "2026-08-28",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Cómputo de materiales",
-      "projectTempKey": 3,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Hecho",
-      "dueDate": "2026-08-27",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Planos de pérgola cochera",
-      "projectTempKey": 4,
-      "category": "Planos",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Computar superficies de revestimiento exterior",
-      "projectTempKey": 4,
-      "category": "Estudio",
-      "priority": "Media",
-      "status": "Hecho",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Computar visitas y monto de Honorarios Pendientes",
-      "projectTempKey": 5,
-      "category": "Presupuesto",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Presupuesto de Honorarios Proyecto",
-      "projectTempKey": 6,
-      "category": "Presupuesto",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-11",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Planos de proyecto Quincho",
-      "projectTempKey": 0,
-      "category": "Planos",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-30",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Definir fecha de inicio de obra",
-      "projectTempKey": 3,
-      "category": "Estudio",
-      "priority": "Baja",
-      "status": "Hecho",
-      "dueDate": "2026-08-28",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Cobro de Mano de Obra Pendiente",
-      "projectTempKey": 8,
-      "category": "Estudio",
-      "priority": "Alta",
-      "status": "Pendiente",
-      "dueDate": "2026-09-02",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Cobrar pendiente de mano de obra: \nSALDO     $ 1.342.487,84\nRetamal:  $   759.463,44\nYo:              $  583.024,40"
-    },
-    {
-      "title": "Terminar planos de instalaciones",
-      "projectTempKey": 8,
-      "category": "Estudio",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-11",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Terminar planos de proyecto para poder cobrar honorarios de dicha tarea, de los que aun no se ha cobrado nada"
-    },
-    {
-      "title": "Verificar finalizacion de obra",
-      "projectTempKey": 5,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "FRENTE:\n- Revestimiento claro en tapas de muros/cochera. (Tapa superior)\n- Revestimiento en tapa superior de los dos pilares del frente.\n- Huecos detrás de las luces: ¿se pueden mejorar?\n- Tarugos arriba de la puerta de entrada: ¡tapar!\n\nPATIO FONDO:\n- Emprolijar cajas de luz en muros.\n- Ver huecos grandes de revoque y parchar también.\n- Cargas de muros galería y parrilla: pintar o revestir.\n- Frente fogón: parchar y revestir.\n- Perfil \"C\": pasar a la casa del primo/vecino.\n- Pintar rejillas con fondo oscuro (las de ventilación)."
-    },
-    {
-      "title": "3D De Ampliacion y fachada",
-      "projectTempKey": 7,
-      "category": "Planos",
-      "priority": "Alta",
-      "status": "Pendiente",
-      "dueDate": "2026-09-01",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Ver color de aberturas para pintar puertas  placa",
-      "projectTempKey": 4,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Hecho",
-      "dueDate": "2026-08-28",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Revisar con taco de colores el color de aberturas de PVC para pintar puertas placa interiores"
-    },
-    {
-      "title": "Computar revestimientos texturados exteriores",
-      "projectTempKey": 4,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Hecho",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Terminar planos de electricidad",
-      "projectTempKey": 0,
-      "category": "Planos",
-      "priority": "Alta",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Planos de amoblamientos",
-      "projectTempKey": 0,
-      "category": "Planos",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Realizar planos de placares y mueble de comedor"
-    },
-    {
-      "title": "Pico Gas en Parrilla",
-      "projectTempKey": 4,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-11",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Extender cañerías. A espera de listado de materiales Plomero"
-    },
-    {
-      "title": "Prueba de instalaciones",
-      "projectTempKey": 4,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-11",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Realizar prueba de instalación de calefacción y agua"
-    },
-    {
-      "title": "Modificaciones Lavadero",
-      "projectTempKey": 3,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-11",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Reparar - Modificar caños de agua en patio/lavadero.\nSacar manguera negra"
-    },
-    {
-      "title": "Canilla de Servicio y Llenado de Pileta",
-      "projectTempKey": 4,
-      "category": "Obra",
-      "priority": "Media",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Pedir a Nicolas dejar esa toma y poner canilla de servicio en aquella esquina"
-    },
-    {
-      "title": "Terminar carpeta de ventana y galeria",
-      "projectTempKey": 4,
-      "category": "Obra",
-      "priority": "Alta",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": ""
-    },
-    {
-      "title": "Ver baños que largan olor en la casa",
-      "projectTempKey": 4,
-      "category": "Obra",
-      "priority": "Alta",
-      "status": "Pendiente",
-      "dueDate": "2026-09-04",
-      "responsible": "Arquitecto Gonnet",
-      "notes": "Ver  con Hugo para hacer ese trabajo"
-    }
+  tasks: [
+    { title: "Cómputo de materiales reforma dormitorio", projectTempKey: "proj_1", category: "Estudio", priority: "Alta", status: "Hecho", dueDate: "2026-08-26", responsible: "Arquitecto Gonnet", notes: "Se realizó solo el computo de tabiques divisorios" },
+    { title: "Presupuesto de Dirección de Obra", projectTempKey: "proj_2", category: "Obra", priority: "Alta", status: "Hecho", dueDate: "2026-08-28", responsible: "Arquitecto Gonnet", notes: "Verificar avance real de obra.\nVerificar existencias de planos de proyecto completo para la correcta ejecución" },
+    { title: "Presupuesto de mano de obra", projectTempKey: "proj_3", category: "Presupuesto", priority: "Alta", status: "Hecho", dueDate: "2026-08-28", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Cómputo de materiales", projectTempKey: "proj_4", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-08-27", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Planos de pérgola cochera", projectTempKey: "proj_5", category: "Planos", priority: "Media", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Computar superficies de revestimiento exterior", projectTempKey: "proj_5", category: "Estudio", priority: "Media", status: "Hecho", dueDate: "2026-09-04", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Computar visitas y monto de Honorarios Pendientes", projectTempKey: "proj_6", category: "Presupuesto", priority: "Media", status: "Hecho", dueDate: "2026-09-04", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Presupuesto de Honorarios Proyecto", projectTempKey: "proj_7", category: "Presupuesto", priority: "Media", status: "Hecho", dueDate: "2026-09-22", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Planos de proyecto Quincho", projectTempKey: "proj_1", category: "Planos", priority: "Media", status: "Pendiente", dueDate: "2026-09-30", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Definir fecha de inicio de obra", projectTempKey: "proj_4", category: "Estudio", priority: "Baja", status: "Hecho", dueDate: "2026-08-28", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Cobro de Mano de Obra Pendiente", projectTempKey: "proj_mt7kclgppc0ryi", category: "Estudio", priority: "Media", status: "Pendiente", dueDate: "2026-10-19", responsible: "Arquitecto Gonnet", notes: "Cobrar pendiente de mano de obra: \nSALDO     $ 1.000.000\nRetamal:  $   600.000\nYo:              $  400.000" },
+    { title: "Terminar planos de instalaciones", projectTempKey: "proj_mt7kclgppc0ryi", category: "Estudio", priority: "Media", status: "Pendiente", dueDate: "2026-09-23", responsible: "Arquitecto Gonnet", notes: "Terminar planos de proyecto para poder cobrar honorarios de dicha tarea, de los que aun no se ha cobrado nada" },
+    { title: "Verificar finalizacion de obra", projectTempKey: "proj_6", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-09-04", responsible: "Arquitecto Gonnet", notes: "FRENTE:\n- Revestimiento claro en tapas de muros/cochera. (Tapa superior)\n- Revestimiento en tapa superior de los dos pilares del frente.\n- Huecos detrás de las luces: ¿se pueden mejorar?\n- Tarugos arriba de la puerta de entrada: ¡tapar!\n\nPATIO FONDO:\n- Emprolijar cajas de luz en muros.\n- Ver huecos grandes de revoque y parchar también.\n- Cargas de muros galería y parrilla: pintar o revestir.\n- Frente fogón: parchar y revestir.\n- Perfil \"C\": pasar a la casa del primo/vecino.\n- Pintar rejillas con fondo oscuro (las de ventilación)." },
+    { title: "3D De Ampliacion y fachada", projectTempKey: "proj_mt7kc2i6rgvtel", category: "Planos", priority: "Alta", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Ver color de aberturas para pintar puertas  placa", projectTempKey: "proj_5", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-08-28", responsible: "Arquitecto Gonnet", notes: "Revisar con taco de colores el color de aberturas de PVC para pintar puertas placa interiores" },
+    { title: "Computar revestimientos texturados exteriores", projectTempKey: "proj_5", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-09-04", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Terminar planos de electricidad", projectTempKey: "proj_1", category: "Planos", priority: "Alta", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Planos de amoblamientos", projectTempKey: "proj_1", category: "Planos", priority: "Media", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "Realizar planos de placares y mueble de comedor" },
+    { title: "Pico Gas en Parrilla", projectTempKey: "proj_5", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-09-11", responsible: "Arquitecto Gonnet", notes: "Extender cañerías. A espera de listado de materiales Plomero" },
+    { title: "Prueba de instalaciones", projectTempKey: "proj_5", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-09-11", responsible: "Arquitecto Gonnet", notes: "Realizar prueba de instalación de calefacción y agua" },
+    { title: "Modificaciones Lavadero", projectTempKey: "proj_4", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-09-11", responsible: "Arquitecto Gonnet", notes: "Reparar - Modificar caños de agua en patio/lavadero.\nSacar manguera negra" },
+    { title: "Canilla de Servicio y Llenado de Pileta", projectTempKey: "proj_5", category: "Obra", priority: "Media", status: "Hecho", dueDate: "2026-09-04", responsible: "Arquitecto Gonnet", notes: "Pedir a Nicolas dejar esa toma y poner canilla de servicio en aquella esquina" },
+    { title: "Terminar carpeta de ventana y galeria", projectTempKey: "proj_5", category: "Obra", priority: "Alta", status: "Hecho", dueDate: "2026-09-04", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Ver baños que largan olor en la casa", projectTempKey: "proj_5", category: "Obra", priority: "Alta", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "Ver  con Hugo para hacer ese trabajo" },
+    { title: "Cargas y pintura losa", projectTempKey: "proj_5", category: "Obra", priority: "Media", status: "Pendiente", dueDate: "2026-09-23", responsible: "Hugo", notes: "" },
+    { title: "Hacer presupuesto de Honorarios", projectTempKey: "proj_mtrqc25rm38njd", category: "Presupuesto", priority: "Media", status: "Hecho", dueDate: "2026-09-11", responsible: "Arquitecto Gonnet", notes: "Preparar presupuesto de honorarios de presentacion de planos de obra sin permiso + dirección de obra faltante\n\nSup: 73.09 m2 Cubiertos. \nverificar semicubierto de alero" },
+    { title: "Hacer Presupuesto de honorarios y obra de alero", projectTempKey: "proj_mu89kuw9mhqr1f", category: "Obra", priority: "Media", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Subir Pago de Aportes a CAUBA En Linea", projectTempKey: "proj_mtrqc25rm38njd", category: "Trámites", priority: "Media", status: "Pendiente", dueDate: "2026-09-25", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Imprimir Planos y Planillas de Expediente", projectTempKey: "proj_mtrqc25rm38njd", category: "Trámites", priority: "Media", status: "Pendiente", dueDate: "2026-09-28", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Preparar Presupuesto de Mano de Obra", projectTempKey: "proj_1", category: "Estudio", priority: "Media", status: "Pendiente", dueDate: "2026-09-25", responsible: "Arquitecto Gonnet", notes: "" },
+    { title: "Presupuesto de Obra", projectTempKey: "proj_7", category: "Obra", priority: "Media", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "Preparar presupuesto aproximado de obra" },
   ]
 };
+ 
