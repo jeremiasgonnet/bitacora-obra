@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Bitácora de Obra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#23405c">
+<meta name="description" content="Proyectos y tareas de Estudio Platz Arquitectura">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bitácora">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink: #1b2430; --ink-soft: #55636f; --ink-faint: #8593a0;
+    --paper: #eef1f0; --surface: #ffffff; --surface-2: #f7f8f7; --line: #d7dee0;
+    --accent: #d9622b; --accent-ink: #ffffff; --accent-soft: #f7ded0;
+    --navy: #23405c; --navy-soft: #dde6ee;
+    --good: #2f8f5b; --good-soft: #dcefe2;
+    --warn: #9c6a10; --warn-soft: #f6e6c6;
+    --bad: #c13f3f; --bad-soft: #f8dede;
+    --shadow: 0 1px 2px rgba(27,36,48,.06), 0 8px 24px -12px rgba(27,36,48,.18);
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e7ecef; --ink-soft: #aab6bf; --ink-faint: #77848d;
+      --paper: #12181e; --surface: #1b232a; --surface-2: #212b33; --line: #2c3841;
+      --accent: #e88348; --accent-ink: #1b120a; --accent-soft: #3a2416;
+      --navy: #8fb4d4; --navy-soft: #1d2f3e;
+      --good: #5fbb8c; --good-soft: #163627;
+      --warn: #d9a545; --warn-soft: #3a2c10;
+      --bad: #e17a7a; --bad-soft: #3a1d1d;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px -12px rgba(0,0,0,.55);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; max-width: 100%; overflow-x: hidden; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: "Public Sans", -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
+  }
+  h1, h2, h3 { font-family: "Archivo", sans-serif; text-wrap: balance; margin: 0; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  button { font-family: inherit; }
+  ::selection { background: var(--accent-soft); }
+
+  /* ---------- Login ---------- */
+  #view-login {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .login-card {
+    width: min(360px, 100%); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; box-shadow: var(--shadow); padding: 28px 24px;
+  }
+  .login-card .brand-mark { display: inline-block; margin-bottom: 14px; }
+  .login-card h1 { font-size: 21px; margin-bottom: 4px; }
+  .login-card .sub { color: var(--ink-soft); font-size: 13.5px; margin-bottom: 20px; }
+  .login-card .field { margin-bottom: 13px; }
+  .login-card label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+  .login-card input {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink);
+    border-radius: 7px; padding: 10px 11px; font-size: 15px; font-family: inherit;
+  }
+  .login-card button[type="submit"] {
+    width: 100%; margin-top: 6px; padding: 11px; border-radius: 7px; border: 1px solid var(--accent);
+    background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14.5px; cursor: pointer;
+  }
+  .login-error { color: var(--bad); font-size: 13px; margin-top: 10px; min-height: 1em; }
+  .login-status { color: var(--ink-faint); font-size: 12.5px; margin-top: 14px; text-align: center; }
+
+  /* ---------- Header ---------- */
+  header.topbar { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding: 14px 20px; }
+  .brand { display: flex; align-items: baseline; gap: 10px; margin-right: auto; min-width: 0; }
+  .brand h1 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
+  .brand-mark {
+    font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 500; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px;
+  }
+  nav.tabs { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 9px; border: 1px solid var(--line); }
+  nav.tabs button { border: none; background: transparent; color: var(--ink-soft); font-size: 13.5px; font-weight: 600; padding: 7px 14px; border-radius: 6px; cursor: pointer; }
+  nav.tabs button.active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 13.5px; font-weight: 600; padding: 8px 13px; cursor: pointer; }
+  .btn:hover { border-color: var(--ink-faint); }
+  .btn-accent { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn-ghost { border-color: transparent; background: transparent; }
+  .btn-danger { color: var(--bad); }
+  .btn[disabled] { opacity: .45; cursor: default; }
+  .icon-btn { border: none; background: transparent; color: var(--ink-faint); cursor: pointer; width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; font-size: 15px; }
+  .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+
+  main { max-width: 1120px; margin: 0 auto; padding: 28px 20px 80px; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 22px; font-weight: 700; }
+  .section-sub { color: var(--ink-soft); font-size: 13.5px; margin-top: 2px; }
+
+  .filterbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 18px; }
+  .filterbar select { background: var(--surface); border: 1px solid var(--line); color: var(--ink); border-radius: 7px; padding: 7px 10px; font-size: 13px; font-weight: 500; }
+  .filterbar label.check { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-soft); margin-left: auto; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 10px; margin-bottom: 22px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+  .stat .n { font-family: "JetBrains Mono", monospace; font-size: 24px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .stat .l { font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
+  .stat.bad .n { color: var(--bad); } .stat.warn .n { color: var(--warn); } .stat.accent .n { color: var(--accent); }
+
+  .tasklist { display: flex; flex-direction: column; gap: 8px; }
+  .task-row { display: grid; grid-template-columns: 22px 1fr auto auto auto auto auto; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 11px 14px; }
+  .task-row.done { opacity: .55; }
+  .task-row.done .task-title { text-decoration: line-through; }
+  .check { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--ink-faint); background: var(--surface); cursor: pointer; display: grid; place-items: center; padding: 0; flex: none; }
+  .check.on { background: var(--good); border-color: var(--good); color: #fff; }
+  .task-main { min-width: 0; }
+  .task-title { font-weight: 600; font-size: 14.5px; }
+  .task-meta { display: flex; gap: 8px; align-items: center; margin-top: 3px; flex-wrap: wrap; }
+  .task-proj { font-size: 12px; color: var(--navy); font-weight: 600; }
+  .task-proj::before { content: "◆ "; font-size: 9px; }
+  .pill { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+  .pill-cat { background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line); text-transform: none; font-weight: 500; }
+  .pill-alta { background: var(--bad-soft); color: var(--bad); }
+  .pill-media { background: var(--warn-soft); color: var(--warn); }
+  .pill-baja { background: var(--good-soft); color: var(--good); }
+  .pill-status { background: var(--navy-soft); color: var(--navy); text-transform: none; }
+  .duedate { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
+  .duedate.overdue { color: var(--bad); font-weight: 600; }
+  .duedate.soon { color: var(--warn); font-weight: 600; }
+  .resp { font-size: 12.5px; color: var(--ink-faint); white-space: nowrap; }
+  .row-actions { display: flex; gap: 4px; }
+  .empty { text-align: center; padding: 48px 20px; color: var(--ink-soft); border: 1px dashed var(--line); border-radius: var(--radius); font-size: 14px; }
+
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+  .proj-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 10px; }
+  .proj-card:hover { border-color: var(--ink-faint); }
+  .proj-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .proj-card h3 { font-size: 16px; font-weight: 700; }
+  .proj-client { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .status-dot { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); }
+  .status-dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ink-faint); }
+  .status-dot.activo::before { background: var(--good); }
+  .status-dot.pausado::before { background: var(--warn); }
+  .status-dot.terminado::before { background: var(--ink-faint); }
+  .proj-progress { height: 5px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+  .proj-progress > div { height: 100%; background: var(--accent); }
+  .proj-foot { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--ink-soft); }
+  .proj-type-tag { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--navy); background: var(--navy-soft); padding: 2px 7px; border-radius: 5px; }
+
+  .detail-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+  .back-link { background: none; border: none; color: var(--ink-soft); font-size: 13px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 4px; }
+  .back-link:hover { color: var(--ink); }
+  .detail-title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .detail-title-row h2 { font-size: 24px; }
+  .detail-notes { color: var(--ink-soft); font-size: 13.5px; margin-top: 6px; max-width: 60ch; white-space: pre-wrap; }
+  .detail-actions { display: flex; gap: 8px; }
+
+  dialog { border: none; border-radius: 14px; padding: 0; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); width: min(480px, 92vw); max-height: 88vh; }
+  dialog:has(.field-notes) { width: min(620px, 94vw); }
+  dialog::backdrop { background: rgba(15,20,26,.45); }
+  .dlg-inner { padding: 22px 22px 18px; overflow-y: auto; max-height: 88vh; }
+  .dlg-inner h3 { font-size: 17px; margin-bottom: 16px; }
+  .field { margin-bottom: 13px; }
+  .field label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+  .field input, .field select, .field textarea { width: 100%; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink); border-radius: 7px; padding: 9px 10px; font-size: 14px; font-family: inherit; }
+  .field textarea { resize: vertical; min-height: 60px; }
+  .field textarea.field-notes { min-height: 200px; font-size: 14.5px; line-height: 1.55; padding: 12px 14px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dlg-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+  .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(0); background: var(--ink); color: var(--paper); font-size: 13px; font-weight: 500; padding: 9px 16px; border-radius: 8px; box-shadow: var(--shadow); z-index: 50; opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); display: inline-block; }
+  .sync-dot.online { background: var(--good); }
+  .sync-dot.offline { background: var(--warn); }
+  .sync-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-soft); margin-right: 6px; }
+
+  @media (max-width: 640px) {
+    main { padding: 20px 14px 70px; }
+    .topbar-inner { padding: 12px 14px; }
+    .brand h1 { font-size: 17px; }
+    nav.tabs { flex: 1 1 auto; }
+    nav.tabs button { flex: 1 1 auto; text-align: center; padding: 7px 8px; }
+    #btn-new-project { flex: 1 1 auto; justify-content: center; }
+    .section-head h2 { font-size: 19px; }
+    .task-row { grid-template-columns: 22px 1fr; row-gap: 6px; padding: 12px; align-items: start; }
+    .task-row > * { grid-column: 2; justify-self: start; }
+    .task-row > .check { grid-column: 1; grid-row: 1; }
+    .task-row > .task-main { grid-row: 1; }
+    .task-row .pill-status { display: none; }
+    .duedate::before { content: "Vence: "; color: var(--ink-faint); font-weight: 500; }
+    .row-actions { justify-self: end; }
+    .field-row { grid-template-columns: 1fr; }
+    .detail-actions { width: 100%; }
+    .detail-actions .btn { flex: 1 1 auto; }
+    .sync-status span.label { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- ---------- Login ---------- -->
+<section id="view-login">
+  <form class="login-card" id="form-login">
+    <span class="brand-mark">OBRA</span>
+    <h1>Bitácora de Obra</h1>
+    <div class="sub">Estudio Platz Arquitectura</div>
+    <div class="field">
+      <label for="login-email">Email</label>
+      <input id="login-email" type="email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="login-pass">Contraseña</label>
+      <input id="login-pass" type="password" autocomplete="current-password" required>
+    </div>
+    <button type="submit">Entrar</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-status" id="login-status">Conectando…</div>
+  </form>
+</section>
+
+<!-- ---------- App ---------- -->
+<div id="app-root" style="display:none">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">OBRA</span>
+        <h1>Bitácora de Obra</h1>
+      </div>
+      <span class="sync-status" id="sync-status"><span class="sync-dot" id="sync-dot"></span><span class="label" id="sync-label">Sincronizado</span></span>
+      <nav class="tabs">
+        <button type="button" data-view="panorama" class="active">Panorama</button>
+        <button type="button" data-view="proyectos">Proyectos</button>
+      </nav>
+      <button type="button" class="btn btn-accent" id="btn-new-project">+ Proyecto</button>
+      <button type="button" class="btn btn-ghost icon-btn" id="btn-logout" title="Cerrar sesión" aria-label="Cerrar sesión">⏻</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="view active" id="view-panorama">
+      <div class="section-head">
+        <div>
+          <h2>Panorama general</h2>
+          <div class="section-sub">Todos tus pendientes, ordenados por prioridad y fecha.</div>
+        </div>
+        <button type="button" class="btn btn-accent" id="btn-new-task-global">+ Tarea</button>
+      </div>
+      <div class="stats" id="panorama-stats"></div>
+      <div class="filterbar">
+        <select id="f-project"><option value="">Todos los proyectos</option></select>
+        <select id="f-category"><option value="">Toda categoría</option></select>
+        <select id="f-priority"><option value="">Toda prioridad</option></select>
+        <label class="check"><input type="checkbox" id="f-done"> Mostrar hechas</label>
+      </div>
+      <div class="tasklist" id="panorama-list"></div>
+    </section>
+
+    <section class="view" id="view-proyectos">
+      <div class="section-head">
+        <div>
+          <h2>Proyectos</h2>
+          <div class="section-sub">Obras y trabajos de estudio en marcha o por realizar.</div>
+        </div>
+      </div>
+      <div class="proj-grid" id="proj-grid"></div>
+    </section>
+
+    <section class="view" id="view-detalle">
+      <button type="button" class="back-link" id="btn-back">← Volver a proyectos</button>
+      <div class="detail-head">
+        <div>
+          <div class="detail-title-row">
+            <h2 id="detail-name"></h2>
+            <span class="status-dot" id="detail-status"></span>
+          </div>
+          <div class="section-sub" id="detail-client"></div>
+          <div class="detail-notes" id="detail-notes"></div>
+        </div>
+        <div class="detail-actions">
+          <button type="button" class="btn" id="btn-edit-project">Editar proyecto</button>
+          <button type="button" class="btn btn-danger" id="btn-delete-project">Eliminar</button>
+        </div>
+      </div>
+      <div class="filterbar">
+        <select id="fd-priority"><option value="">Toda prioridad</option></select>
+        <label class="check"><input type="checkbox" id="fd-done"> Mostrar hechas</label>
+        <button type="button" class="btn btn-accent" id="btn-new-task-detail" style="margin-left:auto">+ Tarea</button>
+      </div>
+      <div class="tasklist" id="detail-list"></div>
+    </section>
+  </main>
+
+  <dialog id="dlg-project">
+    <form class="dlg-inner" id="form-project">
+      <h3 id="dlg-project-title">Nuevo proyecto</h3>
+      <input type="hidden" id="pf-id">
+      <div class="field"><label for="pf-name">Nombre</label><input id="pf-name" required placeholder="Ej: Casa Rivadavia 1420"></div>
+      <div class="field"><label for="pf-client">Cliente / dirección</label><input id="pf-client" placeholder="Opcional"></div>
+      <div class="field-row">
+        <div class="field"><label for="pf-type">Tipo</label>
+          <select id="pf-type"><option>Obra</option><option>Estudio</option><option>Mixto</option></select>
+        </div>
+        <div class="field"><label for="pf-status">Estado</label>
+          <select id="pf-status"><option>Activo</option><option>Pausado</option><option>Terminado</option></select>
+        </div>
+      </div>
+      <div class="field"><label for="pf-notes">Notas</label><textarea id="pf-notes" class="field-notes" placeholder="Opcional"></textarea></div>
+      <div class="dlg-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+        <button type="submit" class="btn btn-accent">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-task">
+    <form class="dlg-inner" id="form-task">
+      <h3 id="dlg-task-title">Nueva tarea</h3>
+      <input type="hidden" id="tf-id">
+      <div class="field"><label for="tf-title">Tarea</label><input id="tf-title" required placeholder="Ej: Hacer planos de cloacas"></div>
+      <div class="field"><label for="tf-project">Proyecto</label><select id="tf-project" required></select></div>
+      <div class="field-row">
+        <div class="field"><label for="tf-category">Categoría</label>
+          <select id="tf-category">
+            <option>Obra</option><option>Planos</option><option>Presupuesto</option>
+            <option>Trámites</option><option>Estudio</option><option>Reunión</option><option>Otro</option>
+          </select>
+        </div>
+        <div class="field"><label for="tf-priority">Prioridad</label>
+          <select id="tf-priority"><option>Alta</option><option selected>Media</option><option>Baja</option></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="tf-due">Fecha límite</label><input type="date" id="tf-due"></div>
+        <div class="field"><label for="tf-status">Estado</label>
+          <select id="tf-status"><option>Pendiente</option><option>En curso</option><option>Hecho</option></select>
+        </div>
+      </div>
+      <div class="field"><label for="tf-resp">Responsable</label><input id="tf-resp" placeholder="Opcional"></div>
+      <div class="field"><label for="tf-notes">Notas</label><textarea id="tf-notes" class="field-notes" placeholder="Opcional"></textarea></div>
+      <div class="dlg-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+        <button type="submit" class="btn btn-accent">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
