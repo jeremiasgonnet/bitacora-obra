@@ -176,6 +176,20 @@
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .dlg-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
 
+  .sketch-field { display: flex; flex-direction: column; gap: 8px; }
+  .sketch-empty { font-size: 12.5px; color: var(--ink-faint); }
+  .sketch-thumb-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .sketch-thumb { width: 96px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); cursor: pointer; background: #fff; }
+  dialog#dlg-sketch { width: min(760px, 97vw); max-height: 94vh; }
+  .sketch-dlg-inner { padding: 16px; display: flex; flex-direction: column; gap: 10px; max-height: 94vh; overflow-y: auto; }
+  .sketch-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .sketch-colors { display: flex; gap: 6px; }
+  .sketch-color { width: 27px; height: 27px; border-radius: 50%; border: 2px solid var(--line); cursor: pointer; padding: 0; }
+  .sketch-color.active { border-color: var(--ink); box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--ink-faint); }
+  .sketch-tools { display: flex; gap: 6px; flex-wrap: wrap; }
+  .sketch-tools .btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+  .sketch-actions-top { display: flex; gap: 6px; margin-left: auto; }
+  #sketch-canvas { width: 100%; aspect-ratio: 4 / 3; background: #fff; border: 1px solid var(--line); border-radius: 8px; touch-action: none; cursor: crosshair; display: block; }
   .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(0); background: var(--ink); color: var(--paper); font-size: 13px; font-weight: 500; padding: 9px 16px; border-radius: 8px; box-shadow: var(--shadow); z-index: 50; opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
   .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); display: inline-block; }
@@ -347,11 +361,50 @@
       </div>
       <div class="field"><label for="tf-resp">Responsable</label><input id="tf-resp" placeholder="Opcional"></div>
       <div class="field"><label for="tf-notes">Notas</label><textarea id="tf-notes" class="field-notes" placeholder="Opcional"></textarea></div>
+      <div class="field">
+        <label>Dibujo / esquema</label>
+        <div class="sketch-field" id="tf-sketch-field">
+          <div class="sketch-empty" id="tf-sketch-empty">Guardá la tarea primero para poder agregar un dibujo a mano.</div>
+          <div class="sketch-thumb-wrap" id="tf-sketch-wrap" hidden>
+            <img id="tf-sketch-thumb" class="sketch-thumb" alt="Dibujo de la tarea">
+            <button type="button" class="btn btn-sm" id="btn-open-sketch">✎ Editar dibujo</button>
+          </div>
+        </div>
+      </div>
       <div class="dlg-actions">
         <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
         <button type="submit" class="btn btn-accent">Guardar</button>
       </div>
     </form>
+  </dialog>
+
+  <dialog id="dlg-sketch">
+    <div class="sketch-dlg-inner">
+      <h3>Dibujo de la tarea</h3>
+      <div class="sketch-toolbar">
+        <div class="sketch-colors">
+          <button type="button" class="sketch-color active" data-color="#1b2430" style="background:#1b2430" aria-label="Negro"></button>
+          <button type="button" class="sketch-color" data-color="#c13f3f" style="background:#c13f3f" aria-label="Rojo"></button>
+          <button type="button" class="sketch-color" data-color="#23405c" style="background:#23405c" aria-label="Azul"></button>
+          <button type="button" class="sketch-color" data-color="#2f8f5b" style="background:#2f8f5b" aria-label="Verde"></button>
+        </div>
+        <div class="sketch-tools">
+          <button type="button" class="btn btn-sm" data-width="2" id="btn-sketch-thin">Fino</button>
+          <button type="button" class="btn btn-sm active" data-width="4.5" id="btn-sketch-med">Medio</button>
+          <button type="button" class="btn btn-sm" data-width="9" id="btn-sketch-thick">Grueso</button>
+          <button type="button" class="btn btn-sm" id="btn-sketch-eraser">Borrador</button>
+        </div>
+        <div class="sketch-actions-top">
+          <button type="button" class="btn btn-sm" id="btn-sketch-undo">Deshacer</button>
+          <button type="button" class="btn btn-sm" id="btn-sketch-clear">Borrar todo</button>
+        </div>
+      </div>
+      <canvas id="sketch-canvas"></canvas>
+      <div class="dlg-actions">
+        <button type="button" class="btn btn-ghost" id="btn-sketch-cancel">Cancelar</button>
+        <button type="button" class="btn btn-accent" id="btn-sketch-save">Guardar dibujo</button>
+      </div>
+    </div>
   </dialog>
 
   <div class="toast" id="toast"></div>
