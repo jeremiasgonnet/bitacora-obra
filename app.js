@@ -268,7 +268,7 @@ function renderPanorama() {
   const list = $("panorama-list");
   list.innerHTML = sorted.length === 0
     ? `<div class="empty">${STATE.projects.length === 0
-        ? 'Creá tu primer proyecto para empezar a cargar tareas.<div style="margin-top:14px"><button type="button" class="btn btn-accent" data-action="import-seed">Importar mis 10 proyectos y 24 tareas anteriores</button></div>'
+        ? `Creá tu primer proyecto para empezar a cargar tareas.<div style="margin-top:14px"><button type="button" class="btn btn-accent" data-action="import-seed">Importar mis ${SEED_DATA.projects.length} proyectos y ${SEED_DATA.tasks.length} tareas anteriores</button></div>`
         : "No hay tareas que coincidan con los filtros."}</div>`
     : sorted.map((t) => taskRowHTML(t, true)).join("");
 }
@@ -277,7 +277,7 @@ function renderProyectos() {
   const grid = $("proj-grid");
   if (STATE.projects.length === 0) {
     grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Todavía no cargaste proyectos. Usá "+ Proyecto" para empezar.' +
-      '<div style="margin-top:14px"><button type="button" class="btn btn-accent" data-action="import-seed">Importar mis 10 proyectos y 24 tareas anteriores</button></div></div>';
+      `<div style="margin-top:14px"><button type="button" class="btn btn-accent" data-action="import-seed">Importar mis ${SEED_DATA.projects.length} proyectos y ${SEED_DATA.tasks.length} tareas anteriores</button></div></div>`;
     return;
   }
   grid.innerHTML = STATE.projects.map((p) => {
