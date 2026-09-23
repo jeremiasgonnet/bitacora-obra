@@ -1,4 +1,4 @@
-const CACHE = "bitacora-shell-v3";
+const CACHE = "bitacora-shell-v5";
 const SHELL = [
   "./",
   "./index.html",
