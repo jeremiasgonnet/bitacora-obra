@@ -47,4 +47,3 @@ export const SEED_DATA = {
     { title: "Presupuesto de Obra", projectTempKey: "proj_7", category: "Obra", priority: "Media", status: "Pendiente", dueDate: "2026-09-26", responsible: "Arquitecto Gonnet", notes: "Preparar presupuesto aproximado de obra" },
   ]
 };
- 
