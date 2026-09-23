@@ -16,6 +16,12 @@ const db = initializeFirestore(fbApp, {
   localCache: persistentLocalCache({ tabManager: persistentSingleTabManager() })
 });
 
+// Los dibujos se guardan como imagen (data URL) directamente en el documento
+// de la tarea en Firestore, para no depender de Firebase Storage (que pide
+// plan de facturación). Cada documento de Firestore admite hasta ~1MB, así
+// que dejamos un margen generoso para el resto de los campos de la tarea.
+const SKETCH_MAX_BYTES = 700 * 1024;
+
 // ---------- register service worker ----------
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -225,7 +231,7 @@ function taskRowHTML(t, showProject) {
     <div class="task-row${isDone ? " done" : ""}" data-task="${t.id}">
       <button type="button" class="check${isDone ? " on" : ""}" data-toggle="${t.id}" aria-label="Marcar hecha">${isDone ? "✓" : ""}</button>
       <div class="task-main">
-        <div class="task-title">${esc(t.title)}</div>
+        <div class="task-title">${esc(t.title)}${t.sketchUrl ? ' <span title="Tiene dibujo" aria-label="Tiene dibujo">✎</span>' : ""}</div>
         <div class="task-meta">
           ${showProject && p ? `<span class="task-proj">${esc(p.name)}</span>` : ""}
           <span class="pill pill-cat">${esc(t.category)}</span>
@@ -353,8 +359,195 @@ function openTaskDialog(task, presetProjectId) {
   $("tf-status").value = task ? task.status : "Pendiente";
   $("tf-resp").value = task ? (task.responsible || "") : "";
   $("tf-notes").value = task ? (task.notes || "") : "";
+  updateSketchField(task);
   dlg.showModal();
 }
+
+// =====================================================================
+// DIBUJO A MANO (canvas + Firebase Storage)
+// =====================================================================
+function updateSketchField(task) {
+  const empty = $("tf-sketch-empty");
+  const wrap = $("tf-sketch-wrap");
+  const thumb = $("tf-sketch-thumb");
+  const openBtn = $("btn-open-sketch");
+  if (!task) {
+    empty.hidden = false;
+    empty.textContent = "Guardá la tarea primero para poder agregar un dibujo a mano.";
+    wrap.hidden = true;
+    return;
+  }
+  if (task.sketchUrl) {
+    empty.hidden = true;
+    wrap.hidden = false;
+    thumb.hidden = false;
+    thumb.src = task.sketchUrl;
+    openBtn.textContent = "✎ Editar dibujo";
+  } else {
+    empty.hidden = true;
+    wrap.hidden = false;
+    thumb.hidden = true;
+    thumb.src = "";
+    openBtn.textContent = "✎ Agregar dibujo";
+  }
+}
+
+const sketchCanvas = $("sketch-canvas");
+const sketchCtx = sketchCanvas.getContext("2d");
+let sketchColor = "#1b2430";
+let sketchWidth = 4.5;
+let sketchErasing = false;
+let sketchDrawing = false;
+let sketchUndoStack = [];
+let sketchLastPoint = null;
+
+function sketchResize() {
+  // Limitamos la resolución interna del canvas (el S23 Ultra tiene una densidad
+  // de píxeles muy alta) para que el PNG final no pese de más al guardarlo en Firestore.
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const rect = sketchCanvas.getBoundingClientRect();
+  const prev = sketchCanvas.width ? sketchCanvas.toDataURL() : null;
+  sketchCanvas.width = Math.round(rect.width * dpr);
+  sketchCanvas.height = Math.round(rect.height * dpr);
+  sketchCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  sketchCtx.fillStyle = "#ffffff";
+  sketchCtx.fillRect(0, 0, rect.width, rect.height);
+  sketchCtx.lineCap = "round";
+  sketchCtx.lineJoin = "round";
+  return prev;
+}
+
+function sketchLoadImage(url) {
+  sketchResize();
+  if (!url) return;
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = () => {
+    const rect = sketchCanvas.getBoundingClientRect();
+    sketchCtx.drawImage(img, 0, 0, rect.width, rect.height);
+  };
+  img.src = url;
+}
+
+function sketchPointPos(e) {
+  const rect = sketchCanvas.getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top, pressure: e.pressure || 0.5 };
+}
+
+function sketchPushUndo() {
+  sketchUndoStack.push(sketchCanvas.toDataURL());
+  if (sketchUndoStack.length > 20) sketchUndoStack.shift();
+}
+
+sketchCanvas.addEventListener("pointerdown", (e) => {
+  e.preventDefault();
+  sketchCanvas.setPointerCapture(e.pointerId);
+  sketchPushUndo();
+  sketchDrawing = true;
+  sketchLastPoint = sketchPointPos(e);
+});
+sketchCanvas.addEventListener("pointermove", (e) => {
+  if (!sketchDrawing) return;
+  e.preventDefault();
+  const p = sketchPointPos(e);
+  sketchCtx.globalCompositeOperation = sketchErasing ? "destination-out" : "source-over";
+  sketchCtx.strokeStyle = sketchColor;
+  const base = sketchErasing ? Math.max(sketchWidth * 2.2, 14) : sketchWidth;
+  sketchCtx.lineWidth = base * (0.55 + p.pressure * 0.9);
+  sketchCtx.beginPath();
+  sketchCtx.moveTo(sketchLastPoint.x, sketchLastPoint.y);
+  sketchCtx.lineTo(p.x, p.y);
+  sketchCtx.stroke();
+  sketchLastPoint = p;
+});
+function sketchEndStroke(e) {
+  if (!sketchDrawing) return;
+  sketchDrawing = false;
+  sketchLastPoint = null;
+  try { sketchCanvas.releasePointerCapture(e.pointerId); } catch (err) {}
+}
+sketchCanvas.addEventListener("pointerup", sketchEndStroke);
+sketchCanvas.addEventListener("pointercancel", sketchEndStroke);
+sketchCanvas.addEventListener("pointerleave", sketchEndStroke);
+
+document.querySelectorAll(".sketch-color").forEach((b) => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".sketch-color").forEach((x) => x.classList.remove("active"));
+    b.classList.add("active");
+    sketchColor = b.dataset.color;
+    sketchErasing = false;
+    $("btn-sketch-eraser").classList.remove("active");
+  });
+});
+[["btn-sketch-thin", 2], ["btn-sketch-med", 4.5], ["btn-sketch-thick", 9]].forEach(([id, w]) => {
+  $(id).addEventListener("click", () => {
+    document.querySelectorAll(".sketch-tools .btn").forEach((x) => x.classList.remove("active"));
+    $(id).classList.add("active");
+    sketchWidth = w;
+    sketchErasing = false;
+  });
+});
+$("btn-sketch-eraser").addEventListener("click", () => {
+  document.querySelectorAll(".sketch-tools .btn").forEach((x) => x.classList.remove("active"));
+  $("btn-sketch-eraser").classList.add("active");
+  sketchErasing = true;
+});
+$("btn-sketch-undo").addEventListener("click", () => {
+  const prev = sketchUndoStack.pop();
+  if (!prev) return;
+  const img = new Image();
+  img.onload = () => {
+    const rect = sketchCanvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    sketchCtx.setTransform(1, 0, 0, 1, 0, 0);
+    sketchCtx.clearRect(0, 0, sketchCanvas.width, sketchCanvas.height);
+    sketchCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    sketchCtx.drawImage(img, 0, 0, rect.width, rect.height);
+  };
+  img.src = prev;
+});
+$("btn-sketch-clear").addEventListener("click", () => {
+  if (!confirm("¿Borrar todo el dibujo?")) return;
+  sketchPushUndo();
+  sketchResize();
+});
+$("btn-sketch-cancel").addEventListener("click", () => $("dlg-sketch").close());
+
+function openSketchEditor() {
+  const taskId = $("tf-id").value;
+  if (!taskId) return;
+  const task = STATE.tasks.find((t) => t.id === taskId);
+  sketchUndoStack = [];
+  $("dlg-sketch").showModal();
+  requestAnimationFrame(() => sketchLoadImage(task ? task.sketchUrl : null));
+}
+$("btn-open-sketch").addEventListener("click", openSketchEditor);
+$("tf-sketch-thumb").addEventListener("click", openSketchEditor);
+
+$("btn-sketch-save").addEventListener("click", async () => {
+  const taskId = $("tf-id").value;
+  if (!taskId) return;
+  const saveBtn = $("btn-sketch-save");
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Guardando…";
+  try {
+    const dataUrl = sketchCanvas.toDataURL("image/png");
+    const approxBytes = Math.round((dataUrl.length - dataUrl.indexOf(",") - 1) * 0.75);
+    if (approxBytes > SKETCH_MAX_BYTES) {
+      showToast("El dibujo quedó muy pesado (" + Math.round(approxBytes / 1024) + "KB). Simplificalo un poco (menos trazos/detalle) y volvé a guardar.");
+      return;
+    }
+    await updateDoc(doc(db, "tasks", taskId), { sketchUrl: dataUrl });
+    $("dlg-sketch").close();
+    if ($("tf-id").value === taskId) updateSketchField({ sketchUrl: dataUrl });
+    showToast("Dibujo guardado.");
+  } catch (err) {
+    showToast("No se pudo guardar el dibujo (" + (err.code || err.message) + ")");
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Guardar dibujo";
+  }
+});
 
 $("btn-new-project").addEventListener("click", () => openProjectDialog(null));
 $("btn-edit-project").addEventListener("click", () => openProjectDialog(projectById(currentProjectId)));
